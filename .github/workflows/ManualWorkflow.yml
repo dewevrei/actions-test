@@ -1,0 +1,41 @@
+name: manul workflow
+
+on:
+  workflow_dispatch:
+    inputs:
+      homedrive:
+        description: 'The home drive on the machine'
+        required: true
+      logLevel:
+        description: 'Log level'
+        default: 'warning'
+        type: choice
+        options:
+        - info
+        - warning
+        - debug
+      tag:
+        description: 'Apply tag after successfull test run'
+        required: true
+        type: boolean
+      environment:
+        description: 'Environment to run tests against'
+        type: environment
+        required: true
+        
+jobs:
+  print-inputs:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Print workflow inputs
+        env:
+          HOME_DRIVE: ${{ inputs.homedrive }}
+          LOG_LEVEL: ${{ inputs.logLevel }}
+          APPLY_TAG: ${{ inputs.tag }}
+          TARGET_ENVIRONMENT: ${{ inputs.environment }}
+        run: |
+          echo "Homedrive: $HOME_DRIVE"
+          echo "Log level: $LOG_LEVEL"
+          echo "Apply tag: $APPLY_TAG"
+          echo "Environment: $TARGET_ENVIRONMENT"
